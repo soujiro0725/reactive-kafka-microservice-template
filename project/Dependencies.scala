@@ -1,7 +1,9 @@
 import sbt._
 
 object Dependencies {
-  val kafka = "com.typesafe.akka" %% "akka-stream-kafka" % Versions.akka_kafka
+  // val kafka = "com.typesafe.akka" %% "akka-stream-kafka" % Versions.akka_kafka
+
+  val kinesis = "com.weightwatchers" %% "reactive-kinesis" % Versions.kinesis
 
   val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
 
