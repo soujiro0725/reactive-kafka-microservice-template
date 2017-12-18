@@ -3,11 +3,11 @@ package akka.kafka
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.SourceQueueWithComplete
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestActorRef, TestKit, TestProbe}
-import com.omearac.producers.ProducerStreamManager
-import com.omearac.producers.ProducerStreamManager.InitializeProducerStream
-import com.omearac.shared.AkkaStreams
-import com.omearac.shared.EventMessages.ActivatedProducerStream
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.producers.ProducerStreamManager
+import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
+import com.soujiro0725.shared.AkkaStreams
+import com.soujiro0725.shared.EventMessages.ActivatedProducerStream
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 

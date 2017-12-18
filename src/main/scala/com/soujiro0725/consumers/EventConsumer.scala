@@ -1,13 +1,13 @@
-package com.omearac.consumers
+package com.soujiro0725.consumers
 
 import akka.actor.{Actor, ActorRef, Props}
 import akka.event.Logging
-import com.omearac.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
-import com.omearac.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
-import com.omearac.settings.Settings
-import com.omearac.shared.EventMessages.ActivatedConsumerStream
-import com.omearac.shared.EventSourcing
-import com.omearac.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
+import com.soujiro0725.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
+import com.soujiro0725.settings.Settings
+import com.soujiro0725.shared.EventMessages.ActivatedConsumerStream
+import com.soujiro0725.shared.EventSourcing
+import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
 
 import scala.collection.mutable.ArrayBuffer
 

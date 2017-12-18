@@ -9,10 +9,10 @@ import akka.stream.QueueOfferResult
 import akka.stream.QueueOfferResult.Enqueued
 import akka.stream.scaladsl.SourceQueueWithComplete
 import akka.testkit.{DefaultTimeout, EventFilter, ImplicitSender, TestActorRef, TestKit, TestProbe}
-import com.omearac.producers.EventProducer
-import com.omearac.shared.AkkaStreams
-import com.omearac.shared.EventMessages.{ActivatedProducerStream, MessagesPublished}
-import com.omearac.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.producers.EventProducer
+import com.soujiro0725.shared.AkkaStreams
+import com.soujiro0725.shared.EventMessages.{ActivatedProducerStream, MessagesPublished}
+import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
 import com.typesafe.config.ConfigFactory
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 

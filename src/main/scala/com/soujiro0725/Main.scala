@@ -1,17 +1,17 @@
-package com.omearac
+package com.soujiro0725
 
 import akka.actor.{ActorSystem, Props}
 import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
-import com.omearac.consumers.ConsumerStreamManager.InitializeConsumerStream
-import com.omearac.consumers.{ConsumerStreamManager, DataConsumer, EventConsumer}
-import com.omearac.http.HttpService
-import com.omearac.producers.ProducerStreamManager.InitializeProducerStream
-import com.omearac.producers.{DataProducer, EventProducer, ProducerStreamManager}
-import com.omearac.settings.Settings
-import com.omearac.shared.AkkaStreams
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.consumers.ConsumerStreamManager.InitializeConsumerStream
+import com.soujiro0725.consumers.{ConsumerStreamManager, DataConsumer, EventConsumer}
+import com.soujiro0725.http.HttpService
+import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
+import com.soujiro0725.producers.{DataProducer, EventProducer, ProducerStreamManager}
+import com.soujiro0725.settings.Settings
+import com.soujiro0725.shared.AkkaStreams
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._

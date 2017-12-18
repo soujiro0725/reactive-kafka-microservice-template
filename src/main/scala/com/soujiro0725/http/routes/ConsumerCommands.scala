@@ -1,4 +1,4 @@
-package com.omearac.http.routes
+package com.soujiro0725.http.routes
 
 import akka.actor.ActorRef
 import akka.event.LoggingAdapter
@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import akka.pattern.ask
 import akka.util.Timeout
-import com.omearac.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
+import com.soujiro0725.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
 
 import scala.concurrent.duration._
 

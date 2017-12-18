@@ -1,4 +1,4 @@
-package com.omearac.settings
+package com.soujiro0725.settings
 
 import akka.actor.ActorSystem
 

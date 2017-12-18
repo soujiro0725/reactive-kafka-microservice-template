@@ -3,11 +3,11 @@ package akka.kafka
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Sink, Source}
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestKit, TestProbe}
-import com.omearac.consumers.ConsumerStream
-import com.omearac.producers.ProducerStream
-import com.omearac.settings.Settings
-import com.omearac.shared.JsonMessageConversion.Conversion
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.consumers.ConsumerStream
+import com.soujiro0725.producers.ProducerStream
+import com.soujiro0725.settings.Settings
+import com.soujiro0725.shared.JsonMessageConversion.Conversion
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 

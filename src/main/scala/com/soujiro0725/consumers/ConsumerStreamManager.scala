@@ -1,13 +1,13 @@
-package com.omearac.consumers
+package com.soujiro0725.consumers
 
 import akka.actor._
 import akka.event.Logging
 import akka.kafka.scaladsl.Consumer.Control
-import com.omearac.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
-import com.omearac.settings.Settings
-import com.omearac.shared.EventMessages.{ActivatedConsumerStream, TerminatedConsumerStream}
-import com.omearac.shared.JsonMessageConversion.Conversion
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
+import com.soujiro0725.settings.Settings
+import com.soujiro0725.shared.EventMessages.{ActivatedConsumerStream, TerminatedConsumerStream}
+import com.soujiro0725.shared.JsonMessageConversion.Conversion
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 
 import scala.collection.mutable
 

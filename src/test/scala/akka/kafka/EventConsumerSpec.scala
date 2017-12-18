@@ -2,9 +2,9 @@ package akka.kafka
 
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestActorRef, TestKit}
-import com.omearac.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
-import com.omearac.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
-import com.omearac.consumers.EventConsumer
+import com.soujiro0725.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
+import com.soujiro0725.consumers.DataConsumer.{ConsumerActorReply, ManuallyInitializeStream, ManuallyTerminateStream}
+import com.soujiro0725.consumers.EventConsumer
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 import scala.collection.mutable.ArrayBuffer

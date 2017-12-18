@@ -1,7 +1,7 @@
-package com.omearac.http
+package com.soujiro0725.http
 
 import akka.http.scaladsl.server.Directives._
-import com.omearac.http.routes.{ConsumerCommands, ProducerCommands}
+import com.soujiro0725.http.routes.{ConsumerCommands, ProducerCommands}
 
 
 trait HttpService extends ConsumerCommands with ProducerCommands {

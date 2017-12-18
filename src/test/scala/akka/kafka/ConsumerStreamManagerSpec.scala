@@ -2,11 +2,11 @@ package akka.kafka
 
 import akka.actor.ActorSystem
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestActorRef, TestKit, TestProbe}
-import com.omearac.consumers.ConsumerStreamManager
-import com.omearac.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
-import com.omearac.shared.AkkaStreams
-import com.omearac.shared.EventMessages.{ActivatedConsumerStream, TerminatedConsumerStream}
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.consumers.ConsumerStreamManager
+import com.soujiro0725.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
+import com.soujiro0725.shared.AkkaStreams
+import com.soujiro0725.shared.EventMessages.{ActivatedConsumerStream, TerminatedConsumerStream}
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 import scala.collection.mutable.ArrayBuffer

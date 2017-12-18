@@ -1,8 +1,8 @@
-package com.omearac.shared
+package com.soujiro0725.shared
 
 import akka.util.Timeout
-import com.omearac.shared.EventMessages.FailedMessageConversion
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.EventMessages.FailedMessageConversion
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 import play.api.libs.json.Json
 import spray.json._
 

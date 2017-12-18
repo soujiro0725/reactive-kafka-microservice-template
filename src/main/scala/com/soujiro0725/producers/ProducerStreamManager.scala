@@ -1,11 +1,11 @@
-package com.omearac.producers
+package com.soujiro0725.producers
 
 import akka.actor._
-import com.omearac.producers.ProducerStreamManager.InitializeProducerStream
-import com.omearac.settings.Settings
-import com.omearac.shared.EventMessages.ActivatedProducerStream
-import com.omearac.shared.JsonMessageConversion.Conversion
-import com.omearac.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
+import com.soujiro0725.settings.Settings
+import com.soujiro0725.shared.EventMessages.ActivatedProducerStream
+import com.soujiro0725.shared.JsonMessageConversion.Conversion
+import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
 
 /**
   * This actor is responsible for creating and terminating the publishing akka-kafka streams.

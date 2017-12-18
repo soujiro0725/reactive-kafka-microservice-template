@@ -1,7 +1,7 @@
 package akka
 
 import akka.actor.ActorSystem
-import com.omearac.settings.Settings
+import com.soujiro0725.settings.Settings
 import org.scalatest._
 
 

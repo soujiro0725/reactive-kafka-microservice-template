@@ -1,4 +1,4 @@
-package com.omearac.shared
+package com.soujiro0725.shared
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer

@@ -6,9 +6,9 @@ import akka.stream.QueueOfferResult
 import akka.stream.QueueOfferResult.Enqueued
 import akka.stream.scaladsl.SourceQueueWithComplete
 import akka.testkit.{TestActorRef, TestProbe}
-import com.omearac.consumers.{DataConsumer, EventConsumer}
-import com.omearac.http.routes.{ConsumerCommands, ProducerCommands}
-import com.omearac.producers.DataProducer
+import com.soujiro0725.consumers.{DataConsumer, EventConsumer}
+import com.soujiro0725.http.routes.{ConsumerCommands, ProducerCommands}
+import com.soujiro0725.producers.DataProducer
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.concurrent.Future

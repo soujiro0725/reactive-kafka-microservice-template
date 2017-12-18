@@ -1,4 +1,4 @@
-package com.omearac.http.routes
+package com.soujiro0725.http.routes
 
 import akka.actor.ActorRef
 import akka.event.LoggingAdapter
@@ -7,8 +7,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.pattern.ask
 import akka.util.Timeout
-import com.omearac.producers.DataProducer.PublishMessages
-import com.omearac.shared.EventMessages.MessagesPublished
+import com.soujiro0725.producers.DataProducer.PublishMessages
+import com.soujiro0725.shared.EventMessages.MessagesPublished
 
 import scala.concurrent.duration._
 

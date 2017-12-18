@@ -1,11 +1,11 @@
-package com.omearac.shared
+package com.soujiro0725.shared
 
 import java.util.Date
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.serialization._
-import com.omearac.shared.EventMessages.EventMessage
-import com.omearac.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.shared.EventMessages.EventMessage
+import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
 
 /**
   * This trait converts EventMessages to ExampleAppEvents and defines the method for publishing them to the local

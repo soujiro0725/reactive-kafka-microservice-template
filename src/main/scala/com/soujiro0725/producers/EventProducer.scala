@@ -1,11 +1,11 @@
-package com.omearac.producers
+package com.soujiro0725.producers
 
 import akka.actor.{Actor, Props}
 import akka.event.Logging
 import akka.stream.scaladsl.SourceQueueWithComplete
-import com.omearac.shared.EventMessages.ActivatedProducerStream
-import com.omearac.shared.EventSourcing
-import com.omearac.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.shared.EventMessages.ActivatedProducerStream
+import com.soujiro0725.shared.EventSourcing
+import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
 
 
 /**

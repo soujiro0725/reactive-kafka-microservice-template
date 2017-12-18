@@ -1,13 +1,13 @@
-package com.omearac.consumers
+package com.soujiro0725.consumers
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.kafka.ConsumerMessage.CommittableOffsetBatch
 import akka.kafka.scaladsl.Consumer
 import akka.kafka.{ConsumerMessage, ConsumerSettings, Subscriptions}
 import akka.stream.scaladsl.{Flow, Sink}
-import com.omearac.shared.EventMessages.FailedMessageConversion
-import com.omearac.shared.JsonMessageConversion.Conversion
-import com.omearac.shared.{AkkaStreams, EventSourcing}
+import com.soujiro0725.shared.EventMessages.FailedMessageConversion
+import com.soujiro0725.shared.JsonMessageConversion.Conversion
+import com.soujiro0725.shared.{AkkaStreams, EventSourcing}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
 

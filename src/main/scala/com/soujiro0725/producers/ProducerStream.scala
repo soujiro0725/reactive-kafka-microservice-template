@@ -1,12 +1,12 @@
-package com.omearac.producers
+package com.soujiro0725.producers
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.kafka.ProducerSettings
 import akka.kafka.scaladsl.Producer
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Flow, Source}
-import com.omearac.shared.JsonMessageConversion.Conversion
-import com.omearac.shared.{AkkaStreams, EventSourcing}
+import com.soujiro0725.shared.JsonMessageConversion.Conversion
+import com.soujiro0725.shared.{AkkaStreams, EventSourcing}
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 
