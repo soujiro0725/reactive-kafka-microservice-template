@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.Done
 import akka.actor.ActorSystem
@@ -10,7 +10,7 @@ import com.soujiro0725.producers.DataProducer
 import com.soujiro0725.producers.DataProducer.PublishMessages
 import com.soujiro0725.shared.AkkaStreams
 import com.soujiro0725.shared.EventMessages.{ActivatedProducerStream, MessagesPublished}
-import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.shared.KinesisMessages.ExampleAppEvent
 import com.typesafe.config.ConfigFactory
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 

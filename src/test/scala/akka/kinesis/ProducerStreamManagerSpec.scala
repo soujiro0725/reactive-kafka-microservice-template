@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.SourceQueueWithComplete
@@ -7,7 +7,7 @@ import com.soujiro0725.producers.ProducerStreamManager
 import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
 import com.soujiro0725.shared.AkkaStreams
 import com.soujiro0725.shared.EventMessages.ActivatedProducerStream
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 
@@ -28,9 +28,9 @@ class ProducerStreamManagerSpec extends TestKit(ActorSystem("ProducerStreamManag
   }
 
 
-  "Sending InitializeProducerStream(self, KafkaMessage) to ProducerStreamManager" should {
+  "Sending InitializeProducerStream(self, KinesisMessage) to ProducerStreamManager" should {
     "initialize the stream for that particular message type, return ActivatedProducerStream(streaRef, \"TempChannel1\") and produce local event " in {
-      testProducerStreamManager ! InitializeProducerStream(self, KafkaMessage)
+      testProducerStreamManager ! InitializeProducerStream(self, KinesisMessage)
       Thread.sleep(500)
       var streamRef: SourceQueueWithComplete[Any] = null
       expectMsgPF() {

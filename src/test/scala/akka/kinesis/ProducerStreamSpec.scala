@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Sink, Source}
@@ -7,8 +7,8 @@ import com.soujiro0725.consumers.ConsumerStream
 import com.soujiro0725.producers.ProducerStream
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.JsonMessageConversion.Conversion
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
-import org.apache.kafka.clients.producer.ProducerRecord
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
+//import org.apache.kafka.clients.producer.ProducerRecord
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 
@@ -24,23 +24,23 @@ class ProducerStreamSpec extends TestKit(ActorSystem("ProducerStreamSpec"))
         shutdown()
     }
 
-    "Sending KafkaMessages to the KafkaMessage producerStream" should {
+    "Sending KinesisMessages to the KinesisMessage producerStream" should {
         "be converted to JSON and obtained by the Stream Sink " in {
 
             //Creating Producer Stream Components for publishing KafkaMessages
-            val producerProps = settings.KafkaProducerInfo("KafkaMessage")
+            val producerProps = settings.KafkaProducerInfo("KinesisMessage")
             val numOfMessages = 50
-            val kafkaMsgs = for { i <- 0 to numOfMessages} yield KafkaMessage("sometime", "somestuff", i)
-            val producerSource= Source(kafkaMsgs)
-            val producerFlow = createStreamFlow[KafkaMessage](producerProps)
+            val kinesisMsgs = for { i <- 0 to numOfMessages} yield KinesisMessage("sometime", "somestuff", i)
+            val producerSource= Source(kinesisMsgs)
+            val producerFlow = createStreamFlow[KinesisMessage](producerProps)
             val producerSink = Sink.actorRef(probe.ref, "complete")
 
-            val jsonKafkaMsgs = for { msg <- kafkaMsgs} yield Conversion[KafkaMessage].convertToJson(msg)
+            val jsonKinesisMsgs = for { msg <- kinesisMsgs} yield Conversion[KinesisMessage].convertToJson(msg)
 
             producerSource.via(producerFlow).runWith(producerSink)
-            for (i <- 0 to jsonKafkaMsgs.length) {
+            for (i <- 0 to jsonKinesisMsgs.length) {
                 probe.expectMsgPF(){
-                    case m: ProducerRecord[_,_] => if (jsonKafkaMsgs.contains(m.value())) () else fail()
+                    case m: ProducerRecord[_,_] => if (jsonKinesisMsgs.contains(m.value())) () else fail()
                     case "complete" => ()
                 }
             }

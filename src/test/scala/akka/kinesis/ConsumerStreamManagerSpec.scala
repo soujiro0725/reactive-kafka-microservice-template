@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.actor.ActorSystem
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestActorRef, TestKit, TestProbe}
@@ -6,7 +6,7 @@ import com.soujiro0725.consumers.ConsumerStreamManager
 import com.soujiro0725.consumers.ConsumerStreamManager.{InitializeConsumerStream, TerminateConsumerStream}
 import com.soujiro0725.shared.AkkaStreams
 import com.soujiro0725.shared.EventMessages.{ActivatedConsumerStream, TerminatedConsumerStream}
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 import scala.collection.mutable.ArrayBuffer
@@ -30,9 +30,9 @@ class ConsumerStreamManagerSpec extends TestKit(ActorSystem("ConsumerStreamManag
   }
 
 
-  "Sending InitializeConsumerStream(self, KafkaMessage) to ConsumerStreamManager" should {
+  "Sending InitializeConsumerStream(self, KinesisMessage) to ConsumerStreamManager" should {
     "initialize the stream for that particular message type, return ActivatedConsumerStream(\"TempChannel1\") and produce local event " in {
-      testConsumerStreamManager ! InitializeConsumerStream(self, KafkaMessage)
+      testConsumerStreamManager ! InitializeConsumerStream(self, KinesisMessage)
       val eventMsg = ActivatedConsumerStream("TempChannel1")
       val expectedMsgs = Seq(eventMsg, "STREAM_INIT")
       var receivedMsgs = ArrayBuffer[Any]()
@@ -75,7 +75,7 @@ class ConsumerStreamManagerSpec extends TestKit(ActorSystem("ConsumerStreamManag
       consumerStreamManagerActor.activeConsumerStreams -= "TempChannel1"
       consumerStreamManagerActor.activeConsumerStreams -= "TempChannel2"
 
-      testConsumerStreamManager ! InitializeConsumerStream(self, KafkaMessage)
+      testConsumerStreamManager ! InitializeConsumerStream(self, KinesisMessage)
       val eventMsg = ActivatedConsumerStream("TempChannel1")
       val expectedMsgs = Seq(eventMsg, "STREAM_INIT")
       var receivedMsgs = ArrayBuffer[Any]()

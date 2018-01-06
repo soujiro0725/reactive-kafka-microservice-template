@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{Flow, Sink, Source}
@@ -8,8 +8,8 @@ import com.soujiro0725.consumers.{ConsumerStream, ConsumerStreamManager}
 import com.soujiro0725.producers.ProducerStream
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.JsonMessageConversion.Conversion
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
-import org.apache.kafka.clients.producer.ProducerRecord
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
+//import org.apache.kafka.clients.producer.ProducerRecord
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 import scala.collection.mutable.ArrayBuffer
@@ -36,8 +36,8 @@ class ConsumerStreamSpec extends TestKit(ActorSystem("ConsumerStreamSpec"))
   }
 
 
-  "Consuming KafkaMessages in JSON from from Kafka" should {
-    "be converted to KafkaMessages and all of them then obtained by the Stream Sink " in {
+  "Consuming KinesisMessages in JSON from from Kinesis" should {
+    "be converted to KinesisMessages and all of them then obtained by the Stream Sink " in {
 
       //Creating KafkaMessage Consumer Stream Components
       val consumerProps = consumerSettings.KafkaConsumerInfo("KafkaMessage")
@@ -47,22 +47,22 @@ class ConsumerStreamSpec extends TestKit(ActorSystem("ConsumerStreamSpec"))
       consumerSource.via(consumerFlow).runWith(consumerSink)
 
       //Creating collection of received messages to compare sent ones to
-      var receivedKafkaMsgs = ArrayBuffer[Any]()
+      var receivedKinesisMsgs = ArrayBuffer[Any]()
 
       //Publish some test messages
       val numOfMessages = 10
-      val kafkaMsgs = for {i <- 1 to numOfMessages} yield KafkaMessage("sometime", "somestuff", i)
-      val producerProps = producerSettings.KafkaProducerInfo("KafkaMessage")
-      val producerSource = Source(kafkaMsgs)
-      val producerFlow = createStreamFlow[KafkaMessage](producerProps)
+      val kinesisMsgs = for {i <- 1 to numOfMessages} yield KinesisMessage("sometime", "somestuff", i)
+      val producerProps = producerSettings.KafkaProducerInfo("KinesisMessage")
+      val producerSource = Source(kinesisMsgs)
+      val producerFlow = createStreamFlow[KinesisMessage](producerProps)
       val producerSink = createStreamSink(producerProps)
       producerSource.via(producerFlow).runWith(producerSink)
 
-      while (receivedKafkaMsgs.length < kafkaMsgs.length) {
+      while (receivedKinesisMsgs.length < kinesisMsgs.length) {
         probe.expectMsgPF(5 seconds) {
           case msgBatch: ArrayBuffer[_] => for (msg <- msgBatch) {
-            if (kafkaMsgs.contains(msg)) {
-              receivedKafkaMsgs += msg;
+            if (kinesisMsgs.contains(msg)) {
+              receivedKinesisMsgs += msg;
               ()
             } else fail()
           }
@@ -73,7 +73,7 @@ class ConsumerStreamSpec extends TestKit(ActorSystem("ConsumerStreamSpec"))
     }
   }
 
-  "Consuming ExampleAppEvent messages in JSON from from Kafka" should {
+  "Consuming ExampleAppEvent messages in JSON from from Kinesis" should {
     "be converted to ExampleAppEvents and all of them then obtained by the Stream Sink " in {
 
       //Creating KafkaMessage Consumer Stream Components
@@ -109,16 +109,16 @@ class ConsumerStreamSpec extends TestKit(ActorSystem("ConsumerStreamSpec"))
     }
   }
 
-  "Consuming KafkaMessages messages in JSON from from Kafka ExampleAppEventChannel" should {
+  "Consuming KinesisMessages messages in JSON from from Kinesis ExampleAppEventChannel" should {
     "fail to be converted to ExampleAppEvent messages and hence nothing should be obtained by the Stream Sink " in {
 
       //Manually creating a producer stream with a custom Flow which sends the messages to the wrong topic
       val numOfMessages = 10
-      val kafkaMsgs = for {i <- 1 to numOfMessages} yield KafkaMessage("sometime", "somestuff", i)
-      val producerProps = producerSettings.KafkaProducerInfo("ExampleAppEvent")
-      val producerSource = Source(kafkaMsgs)
-      val producerFlow = Flow[KafkaMessage].map { msg =>
-        val stringJSONMessage = Conversion[KafkaMessage].convertToJson(msg)
+      val kinesisMsgs = for {i <- 1 to numOfMessages} yield KinesisMessage("sometime", "somestuff", i)
+      val producerProps = producerSettings.KinesisProducerInfo("ExampleAppEvent")
+      val producerSource = Source(kinesisMsgs)
+      val producerFlow = Flow[KinesisMessage].map { msg =>
+        val stringJSONMessage = Conversion[KinesisMessage].convertToJson(msg)
         val topicToPublish = "TempChannel2"
         new ProducerRecord[Array[Byte], String](topicToPublish, 0, null, stringJSONMessage)
       }
@@ -132,7 +132,7 @@ class ConsumerStreamSpec extends TestKit(ActorSystem("ConsumerStreamSpec"))
       testConsumerStreamManager ! InitializeConsumerStream(self, ExampleAppEvent)
 
       //Using the already materialized and ran ConsumerStream
-      while (receivedEventMsgs.length < kafkaMsgs.length) {
+      while (receivedEventMsgs.length < kinesisMsgs.length) {
         testEventListener.expectMsgPF(5 seconds) {
           case ExampleAppEvent(_, _, msg) =>
             if (msg contains "FailedMessageConversion") {

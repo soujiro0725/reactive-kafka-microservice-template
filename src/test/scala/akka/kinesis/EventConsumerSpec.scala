@@ -1,4 +1,4 @@
-package akka.kafka
+package akka.kinesis
 
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.testkit.{DefaultTimeout, ImplicitSender, TestActorRef, TestKit}
