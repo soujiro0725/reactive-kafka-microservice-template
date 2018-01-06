@@ -11,6 +11,10 @@ import com.soujiro0725.shared.{AkkaStreams, EventSourcing}
 // import org.apache.kafka.clients.consumer.ConsumerConfig
 // import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer}
 
+import com.amazonaws.services.kinesis.model.ShardIteratorType
+import akka.stream.alpakka.kinesis.ShardSettings
+import scala.concurrent.duration._
+
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 
@@ -29,13 +33,14 @@ trait ConsumerStream extends AkkaStreams with EventSourcing {
     }
 
     def createStreamSource(consumerProperties: Map[String,String])  = {
-        val kafkaMBAddress = consumerProperties("bootstrap-servers")
-        val groupID = consumerProperties("groupId")
         val topicSubscription = consumerProperties("subscription-topic")
-        val consumerSettings = ConsumerSettings(system, new ByteArrayDeserializer, new StringDeserializer)
-            .withBootstrapServers(kafkaMBAddress)
-            .withGroupId(groupID)
-            .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+        val consumerSettings = ShardSettings(
+        streamName = "TestDataChannel",
+        shardId = "shard-id",
+        shardIteratorType = ShardIteratorType.TRIM_HORIZON,
+        refreshInterval = 1.second,
+        limit = 500
+      )
 
         Consumer.committableSource(consumerSettings, Subscriptions.topics(topicSubscription))
     }

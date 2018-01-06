@@ -14,7 +14,6 @@ class Settings(system:ActorSystem) {
     object KinesisProducers {
         val numberOfProducers = system.settings.config.getInt("akka.kinesis.producer.num-producers")
 
-        //TODO: We only have one bootstrap server (kinesis broker) at the moment so we get one IP below)
         val KinesisProducerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfProducers) yield {
             val kinesisMessageType = system.settings.config.getString(s"akka.kinesis.producer.p$i.message-type")
             val kinesisMessageBrokerIP = system.settings.config.getString(s"akka.kinesis.producer.p$i.bootstrap-servers")

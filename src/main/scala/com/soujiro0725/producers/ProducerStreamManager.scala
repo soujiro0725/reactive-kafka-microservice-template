@@ -5,12 +5,12 @@ import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.EventMessages.ActivatedProducerStream
 import com.soujiro0725.shared.JsonMessageConversion.Conversion
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
 
 /**
-  * This actor is responsible for creating and terminating the publishing akka-kafka streams.
+  * This actor is responsible for creating and terminating the publishing akka-kinesis streams.
   * Upon receiving an InitializeProducerStream message with a corresponding message type
-  * (KafkaMessage or ExampleAppEvent) and producer source actor reference, this manager initializes the stream,
+  * (KinesisMessage or ExampleAppEvent) and producer source actor reference, this manager initializes the stream,
   * sends an ActivatedProducerStream message to the source actor and finally publishes a local event to the
   * Akka Event Bus.
   */
@@ -31,11 +31,11 @@ class ProducerStreamManager extends Actor with ProducerStream {
 
   //Edit this receive method with any new Streamed message types
   def receive: Receive = {
-    case InitializeProducerStream(producerActorRef, KafkaMessage) => {
+    case InitializeProducerStream(producerActorRef, KinesisMessage) => {
 
       //Get producer properties
-      val producerProperties = settings.KafkaProducerInfo("KafkaMessage")
-      startProducerStream[KafkaMessage](producerActorRef, producerProperties)
+      val producerProperties = settings.KafkaProducerInfo("KinesisMessage")
+      startProducerStream[KinesisMessage](producerActorRef, producerProperties)
     }
     case InitializeProducerStream(producerActorRef, ExampleAppEvent) => {
 
@@ -54,8 +54,8 @@ class ProducerStreamManager extends Actor with ProducerStream {
     val producerStream = streamSource.via(streamFlow).to(streamSink).run()
 
     //Send the completed stream reference to the actor who wants to publish to it
-    val kafkaTopic = producerProperties("publish-topic")
-    producerActorSource ! ActivatedProducerStream(producerStream, kafkaTopic)
-    publishLocalEvent(ActivatedProducerStream(producerStream, kafkaTopic))
+    val kinesisTopic = producerProperties("publish-topic")
+    producerActorSource ! ActivatedProducerStream(producerStream, kinesisTopic)
+    publishLocalEvent(ActivatedProducerStream(producerStream, kinesisTopic))
   }
 }

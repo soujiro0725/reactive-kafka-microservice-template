@@ -13,11 +13,15 @@ import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 
 class ProducerStreamSpec extends TestKit(ActorSystem("ProducerStreamSpec"))
-    with DefaultTimeout with ImplicitSender
-    with WordSpecLike with Matchers with BeforeAndAfterAll
-    with ConsumerStream with ProducerStream {
+    with DefaultTimeout
+    with ImplicitSender
+    with WordSpecLike
+    with Matchers
+    with BeforeAndAfterAll
+    with ConsumerStream
+    with ProducerStream {
 
-    val settings = Settings(system).KafkaProducers
+    val settings = Settings(system).KinesisProducers
     val probe = TestProbe()
 
     override def afterAll: Unit = {
@@ -27,8 +31,8 @@ class ProducerStreamSpec extends TestKit(ActorSystem("ProducerStreamSpec"))
     "Sending KinesisMessages to the KinesisMessage producerStream" should {
         "be converted to JSON and obtained by the Stream Sink " in {
 
-            //Creating Producer Stream Components for publishing KafkaMessages
-            val producerProps = settings.KafkaProducerInfo("KinesisMessage")
+            //Creating Producer Stream Components for publishing KinesisMessages
+            val producerProps = settings.KinesisProducerInfo("KinesisMessage")
             val numOfMessages = 50
             val kinesisMsgs = for { i <- 0 to numOfMessages} yield KinesisMessage("sometime", "somestuff", i)
             val producerSource= Source(kinesisMsgs)
@@ -51,7 +55,7 @@ class ProducerStreamSpec extends TestKit(ActorSystem("ProducerStreamSpec"))
         "be converted to JSON and obtained by the Stream Sink " in {
 
             //Creating Producer Stream Components for publishing ExampleAppEvent messages
-            val producerProps = settings.KafkaProducerInfo("ExampleAppEvent")
+            val producerProps = settings.KinesisProducerInfo("ExampleAppEvent")
             val numOfMessages = 50
             val eventMsgs = for { i <- 0 to 50} yield ExampleAppEvent("sometime", "senderID", s"Event number $i occured")
 

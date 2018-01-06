@@ -11,6 +11,8 @@ import com.soujiro0725.shared.{AkkaStreams, EventSourcing}
 // import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 
 import com.amazonaws.services.kinesis.model.ShardIteratorType
+import com.amazonaws.services.kinesis.{AmazonKinesisAsync, AmazonKinesisAsyncClientBuilder}
+import akka.stream.alpakka.kinesis.javadsl.{KinesisSource,KinesisSink}
 import akka.stream.alpakka.kinesis.ShardSettings
 import akka.stream.alpakka.kinesis.KinesisFlowSettings
 import scala.concurrent.duration._
@@ -20,23 +22,33 @@ import scala.concurrent.duration._
   */
 
 trait ProducerStream extends AkkaStreams with EventSourcing {
-    implicit val system: ActorSystem
-    def self: ActorRef
+  implicit val system: ActorSystem
+  def self: ActorRef
 
-    def createStreamSource[msgType] = {
+  val streamName = "TestDataChannel"
+  val amazonKinesisAsync: AmazonKinesisAsync = AmazonKinesisAsyncClientBuilder.defaultClient()
+
+  def createStreamSource[msgType] = {
         Source.queue[msgType](Int.MaxValue,OverflowStrategy.backpressure)
     }
 
     def createStreamSink(producerProperties: Map[String, String]) = {
-      val producerSettings = ShardSettings(
-        streamName = "TestDataChannel",
-        shardId = "shard-id",
-        shardIteratorType = ShardIteratorType.TRIM_HORIZON,
-        refreshInterval = 1.second,
-        limit = 500
+      val producerFlowSettings = KinesisFlowSettings(
+        parallelism = 1,
+        maxBatchSize = 500,
+        maxRecordsPerSecond = 1000,
+        maxBytesPerSecond = 1000000,
+        maxRetries = 5,
+        backoffStrategy = KinesisFlowSettings.Exponential,
+        retryInitialTimeout = 100 millis
       )
 
-      Producer.plainSink(producerSettings)
+      //Producer.plainSink(producerSettings)
+      KinesisSink(
+        streamName,
+        producerFlowSettings,
+        amazonKinesisAsync
+      )
     }
 
     def createStreamFlow[msgType: Conversion](producerProperties: Map[String, String]) = {
