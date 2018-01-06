@@ -10,6 +10,11 @@ import com.soujiro0725.shared.{AkkaStreams, EventSourcing}
 // import org.apache.kafka.clients.producer.ProducerRecord
 // import org.apache.kafka.common.serialization.{ByteArraySerializer, StringSerializer}
 
+import com.amazonaws.services.kinesis.model.ShardIteratorType
+import akka.stream.alpakka.kinesis.ShardSettings
+import akka.stream.alpakka.kinesis.KinesisFlowSettings
+import scala.concurrent.duration._
+
 /**
   * This trait defines the functions for creating the producer stream components.
   */
@@ -23,10 +28,15 @@ trait ProducerStream extends AkkaStreams with EventSourcing {
     }
 
     def createStreamSink(producerProperties: Map[String, String]) = {
-        val kafkaMBAddress = producerProperties("bootstrap-servers")
-        val producerSettings = ProducerSettings(system, new ByteArraySerializer, new StringSerializer).withBootstrapServers(kafkaMBAddress)
+      val producerSettings = ShardSettings(
+        streamName = "TestDataChannel",
+        shardId = "shard-id",
+        shardIteratorType = ShardIteratorType.TRIM_HORIZON,
+        refreshInterval = 1.second,
+        limit = 500
+      )
 
-        Producer.plainSink(producerSettings)
+      Producer.plainSink(producerSettings)
     }
 
     def createStreamFlow[msgType: Conversion](producerProperties: Map[String, String]) = {

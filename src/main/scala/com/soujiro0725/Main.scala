@@ -11,18 +11,18 @@ import com.soujiro0725.producers.ProducerStreamManager.InitializeProducerStream
 import com.soujiro0725.producers.{DataProducer, EventProducer, ProducerStreamManager}
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.AkkaStreams
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.io.StdIn
 
 /**
-  * This starts the Reactive Kafka Microservice Template
+  * This starts the Reactive Kinesis Microservice Template
   */
 
 object Main extends App with HttpService with AkkaStreams {
-  implicit val system = ActorSystem("akka-reactive-kafka-app")
+  implicit val system = ActorSystem("akka-reactive-kinesis-app")
   val log = Logging(system, this.getClass.getName)
 
   //Start the akka-http server and listen for http requests
@@ -32,21 +32,21 @@ object Main extends App with HttpService with AkkaStreams {
   val producerStreamManager = system.actorOf(Props(new ProducerStreamManager), "producerStreamManager")
   val consumerStreamManager = system.actorOf(Props(new ConsumerStreamManager), "consumerStreamManager")
 
-  //Create actor to publish event messages to kafka stream.
+  //Create actor to publish event messages to kinesis stream.
   val eventProducer = system.actorOf(EventProducer.props, "eventProducer")
   producerStreamManager ! InitializeProducerStream(eventProducer, ExampleAppEvent)
 
-  //Create actor to consume event messages from kafka stream.
+  //Create actor to consume event messages from kinesis stream.
   val eventConsumer = system.actorOf(EventConsumer.props, "eventConsumer")
   consumerStreamManager ! InitializeConsumerStream(eventConsumer, ExampleAppEvent)
 
-  //Create actor to publish data messages to kafka stream.
+  //Create actor to publish data messages to kinesis stream.
   val dataProducer = system.actorOf(DataProducer.props, "dataProducer")
-  producerStreamManager ! InitializeProducerStream(dataProducer, KafkaMessage)
+  producerStreamManager ! InitializeProducerStream(dataProducer, KinesisMessage)
 
-  //Create actor to consume data messages from kafka stream.
+  //Create actor to consume data messages from kinesis stream.
   val dataConsumer = system.actorOf(DataConsumer.props, "dataConsumer")
-  consumerStreamManager ! InitializeConsumerStream(dataConsumer, KafkaMessage)
+  consumerStreamManager ! InitializeConsumerStream(dataConsumer, KinesisMessage)
 
   //Shutdown
   shutdownApplication()

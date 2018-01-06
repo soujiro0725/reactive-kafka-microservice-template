@@ -5,11 +5,11 @@ import java.util.Date
 import akka.actor.{ActorRef, ActorSystem}
 import akka.serialization._
 import com.soujiro0725.shared.EventMessages.EventMessage
-import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.shared.KinesisMessages.ExampleAppEvent
 
 /**
   * This trait converts EventMessages to ExampleAppEvents and defines the method for publishing them to the local
-  * Akka Event Bus. The conversion occurs since we eventally publish the ExampleAppEvents to Kafka via a stream once
+  * Akka Event Bus. The conversion occurs since we eventally publish the ExampleAppEvents to Kinesis via a stream once
   * they're picked up from the local bus.
   */
 

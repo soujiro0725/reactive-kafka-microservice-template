@@ -2,7 +2,7 @@ package com.soujiro0725.shared
 
 import akka.util.Timeout
 import com.soujiro0725.shared.EventMessages.FailedMessageConversion
-import com.soujiro0725.shared.KafkaMessages.{ExampleAppEvent, KafkaMessage}
+import com.soujiro0725.shared.KinesisMessages.{ExampleAppEvent, KinesisMessage}
 import play.api.libs.json.Json
 import spray.json._
 
@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 
 /**
   * Here we define a typeclass which converts case class messages to/from JSON.
-  * Currently, we can convert KafkaMessage and ExampleAppEvent messages to/from JSON.
+  * Currently, we can convert KinesisMessage and ExampleAppEvent messages to/from JSON.
   * Any additional case class types need to have conversion methods defined here.
   */
 
@@ -27,24 +27,24 @@ object JsonMessageConversion {
     //Here is where we create implicit objects for each Message Type you wish to convert to/from JSON
     object Conversion extends DefaultJsonProtocol {
 
-        implicit object KafkaMessageConversions extends Conversion[KafkaMessage]  {
-            implicit val json3 = jsonFormat3(KafkaMessage)
+        implicit object KinesisMessageConversions extends Conversion[KinesisMessage]  {
+            implicit val json3 = jsonFormat3(KinesisMessage)
 
             /**
-              * Converts the JSON string from the CommittableMessage to KafkaMessage case class
-              * @param msg is the json string to be converted to KafkaMessage case class
-              * @return either a KafkaMessage or Unit (if conversion fails)
+              * Converts the JSON string from the CommittableMessage to KinesisMessage case class
+              * @param msg is the json string to be converted to KinesisMessage case class
+              * @return either a KinesisMessage or Unit (if conversion fails)
               */
-            def convertFromJson(msg: String): Either[FailedMessageConversion, KafkaMessage] = {
+            def convertFromJson(msg: String): Either[FailedMessageConversion, KinesisMessage] = {
                 try {
-                    Right(msg.parseJson.convertTo[KafkaMessage])
+                    Right(msg.parseJson.convertTo[KinesisMessage])
                 }
                 catch {
-                    case e: Exception => Left(FailedMessageConversion("kafkaTopic", msg, "to: KafkaMessage"))
+                    case e: Exception => Left(FailedMessageConversion("kinesisTopic", msg, "to: KinesisMessage"))
                 }
             }
-            def convertToJson(msg: KafkaMessage) = {
-                implicit val writes = Json.writes[KafkaMessage]
+            def convertToJson(msg: KinesisMessage) = {
+                implicit val writes = Json.writes[KinesisMessage]
                 Json.toJson(msg).toString
             }
         }
@@ -62,7 +62,7 @@ object JsonMessageConversion {
                      Right(msg.parseJson.convertTo[ExampleAppEvent])
                 }
                 catch {
-                    case e: Exception => Left(FailedMessageConversion("kafkaTopic", msg, "to: ExampleAppEvent"))
+                    case e: Exception => Left(FailedMessageConversion("kinesisTopic", msg, "to: ExampleAppEvent"))
                 }
             }
             def convertToJson(msg: ExampleAppEvent) = {
