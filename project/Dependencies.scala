@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  val kinesis = "com.weightwatchers" %% "reactive-kinesis" % Versions.kinesis
+  val alpakka = "com.lightbend.akka" %% "akka-stream-alpakka-kinesis" % Versions.alpakka
 
   val logback = "ch.qos.logback" % "logback-classic" % Versions.logback
 

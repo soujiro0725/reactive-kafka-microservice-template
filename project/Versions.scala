@@ -16,5 +16,5 @@ object Versions {
 
   val scalatest = "3.0.4"
 
-  val kinesis = "0.5.5"
+  val alpakka = "0.15.1"
 }

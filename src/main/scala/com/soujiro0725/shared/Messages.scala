@@ -17,7 +17,7 @@ object EventMessages {
     case class FailedMessageConversion(kafkaTopic: String, msg: String, msgType: String) extends EventMessage
 }
 
-object KafkaMessages {
-    case class KafkaMessage(time: String, subject: String, item: Int)
+object KinesisMessages {
+    case class KinesisMessage(time: String, subject: String, item: Int)
     case class ExampleAppEvent(time: String, senderID: String, eventType: String)
 }

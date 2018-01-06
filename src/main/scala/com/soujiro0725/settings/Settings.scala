@@ -11,29 +11,29 @@ class Settings(system:ActorSystem) {
     object Http {
         val host = system.settings.config.getString("http.host")
     }
-    object KafkaProducers {
-        val numberOfProducers = system.settings.config.getInt("akka.kafka.producer.num-producers")
+    object KinesisProducers {
+        val numberOfProducers = system.settings.config.getInt("akka.kinesis.producer.num-producers")
 
-        //TODO: We only have one bootstrap server (kafka broker) at the moment so we get one IP below)
-        val KafkaProducerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfProducers) yield {
-            val kafkaMessageType = system.settings.config.getString(s"akka.kafka.producer.p$i.message-type")
-            val kafkaMessageBrokerIP = system.settings.config.getString(s"akka.kafka.producer.p$i.bootstrap-servers")
-            val kafkaTopic = system.settings.config.getString(s"akka.kafka.producer.p$i.publish-topic")
-            val numberOfPartitions = system.settings.config.getString(s"akka.kafka.producer.p$i.num.partitions")
-            kafkaMessageType -> Map("bootstrap-servers" -> kafkaMessageBrokerIP, "publish-topic" -> kafkaTopic, "num.partitions" -> numberOfPartitions)
+        //TODO: We only have one bootstrap server (kinesis broker) at the moment so we get one IP below)
+        val KinesisProducerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfProducers) yield {
+            val kinesisMessageType = system.settings.config.getString(s"akka.kinesis.producer.p$i.message-type")
+            val kinesisMessageBrokerIP = system.settings.config.getString(s"akka.kinesis.producer.p$i.bootstrap-servers")
+            val kinesisStream = system.settings.config.getString(s"akka.kinesis.producer.p$i.publish-topic")
+            val numberOfPartitions = system.settings.config.getString(s"akka.kinesis.producer.p$i.num.partitions")
+            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "publish-topic" -> kinesisStream, "num.partitions" -> numberOfPartitions)
         }).toMap
     }
 
-    object KafkaConsumers {
-        val numberOfConsumers = system.settings.config.getInt("akka.kafka.consumer.num-consumers")
+    object KinesisConsumers {
+        val numberOfConsumers = system.settings.config.getInt("akka.kinesis.consumer.num-consumers")
 
-        //TODO: We only have one bootstrap server (kafka broker) at the moment so we get one IP below)
-        val KafkaConsumerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfConsumers) yield {
-            val kafkaMessageType = system.settings.config.getString(s"akka.kafka.consumer.c$i.message-type")
-            val kafkaMessageBrokerIP = system.settings.config.getString(s"akka.kafka.consumer.c$i.bootstrap-servers")
-            val kafkaTopic = system.settings.config.getString(s"akka.kafka.consumer.c$i.subscription-topic")
-            val groupId = system.settings.config.getString(s"akka.kafka.consumer.c$i.groupId")
-            kafkaMessageType -> Map("bootstrap-servers" -> kafkaMessageBrokerIP, "subscription-topic" -> kafkaTopic, "groupId" -> groupId)
+        //TODO: We only have one bootstrap server (kinesis broker) at the moment so we get one IP below)
+        val KinesisConsumerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfConsumers) yield {
+            val kinesisMessageType = system.settings.config.getString(s"akka.kinesis.consumer.c$i.message-type")
+            val kinesisMessageBrokerIP = system.settings.config.getString(s"akka.kinesis.consumer.c$i.bootstrap-servers")
+            val kinesisStream = system.settings.config.getString(s"akka.kinesis.consumer.c$i.subscription-topic")
+            val groupId = system.settings.config.getString(s"akka.kinesis.consumer.c$i.groupId")
+            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "subscription-topic" -> kinesisStream, "groupId" -> groupId)
         }).toMap
     }
 }

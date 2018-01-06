@@ -1,6 +1,6 @@
 import Dependencies._
 
-name := "reactive-kafka-microservice-template"
+name := "reactive-kinesis-microservice-template"
 
 version := "0.1"
 
@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   io_spray,
   play_json,
   scalatest,
-  kinesis
+  alpakka
 )
 
 //Run tests Sequentially
