@@ -7,14 +7,14 @@ import com.soujiro0725.consumers.DataConsumer.{ConsumerActorReply, ManuallyIniti
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.EventMessages.ActivatedConsumerStream
 import com.soujiro0725.shared.EventSourcing
-import com.soujiro0725.shared.KafkaMessages.KafkaMessage
+import com.soujiro0725.shared.KinesisMessages.KinesisMessage
 
 import scala.collection.mutable.ArrayBuffer
 
 
 /**
-  * This actor serves as a Sink for the kafka stream that is created by the ConsumerStreamManager.
-  * The corresponding stream converts the json from the kafka topic TestDataChannel to the message type KafkaMessage.
+  * This actor serves as a Sink for the kinesis stream that is created by the ConsumerStreamManager.
+  * The corresponding stream converts the json from the kinesis topic TestDataChannel to the message type KinesisMessage.
   * Once this actor receives a batch of such messages he prints them out.
   *
   * This actor can be started and stopped manually from the HTTP interface, and in doing so, changes between receiving
@@ -41,8 +41,8 @@ class DataConsumer extends Actor with EventSourcing {
   //Once stream is started by manager, we save the actor ref of the manager
   var consumerStreamManager: ActorRef = null
 
-  //Get Kafka Topic
-  val kafkaTopic = Settings(system).KafkaConsumers.KafkaConsumerInfo("KafkaMessage")("subscription-topic")
+  //Get Kinesis Topic
+  val kinesisTopic = Settings(system).KinesisConsumers.KinesisConsumerInfo("KinesisMessage")("subscription-topic")
 
   def receive: Receive = {
 
@@ -56,7 +56,7 @@ class DataConsumer extends Actor with EventSourcing {
     case ManuallyTerminateStream => sender() ! ConsumerActorReply("Data Consumer Stream Already Stopped")
 
     case ManuallyInitializeStream =>
-      consumerStreamManager ! InitializeConsumerStream(self, KafkaMessage)
+      consumerStreamManager ! InitializeConsumerStream(self, KinesisMessage)
       sender() ! ConsumerActorReply("Data Consumer Stream Started")
 
     case other => log.error("Data Consumer got unknown message while in idle:" + other)
@@ -75,7 +75,7 @@ class DataConsumer extends Actor with EventSourcing {
     case ManuallyInitializeStream => sender() ! ConsumerActorReply("Data Consumer Already Started")
 
     case ManuallyTerminateStream =>
-      consumerStreamManager ! TerminateConsumerStream(kafkaTopic)
+      consumerStreamManager ! TerminateConsumerStream(kinesisTopic)
       sender() ! ConsumerActorReply("Data Consumer Stream Stopped")
 
     case other => log.error("Data Consumer got Unknown message while in consuming " + other)

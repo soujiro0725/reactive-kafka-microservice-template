@@ -7,14 +7,14 @@ import com.soujiro0725.consumers.DataConsumer.{ConsumerActorReply, ManuallyIniti
 import com.soujiro0725.settings.Settings
 import com.soujiro0725.shared.EventMessages.ActivatedConsumerStream
 import com.soujiro0725.shared.EventSourcing
-import com.soujiro0725.shared.KafkaMessages.ExampleAppEvent
+import com.soujiro0725.shared.KinesisMessages.ExampleAppEvent
 
 import scala.collection.mutable.ArrayBuffer
 
 
 /**
-  * This actor serves as a Sink for the kafka stream that is created by the ConsumerStreamManager.
-  * The corresponding stream converts the json from the kafka topic AppEventChannel to the message type ExampleAppEvent.
+  * This actor serves as a Sink for the kinesis stream that is created by the ConsumerStreamManager.
+  * The corresponding stream converts the json from the kinesis topic AppEventChannel to the message type ExampleAppEvent.
   * Once this actor receives a batch of such messages he prints them out.
   *
   * This actor can be started and stopped manually from the HTTP interface, and in doing so, changes between receiving
@@ -33,8 +33,8 @@ class EventConsumer extends Actor with EventSourcing {
   //Once stream is started by manager, we save the actor ref of the manager
   var consumerStreamManager: ActorRef = null
 
-  //Get Kafka Topic
-  val kafkaTopic = Settings(system).KafkaConsumers.KafkaConsumerInfo("ExampleAppEvent")("subscription-topic")
+  //Get Kinesis Topic
+  val kinesisTopic = Settings(system).KinesisConsumers.KinesisConsumerInfo("ExampleAppEvent")("subscription-topic")
 
   def receive: Receive = {
     case InitializeConsumerStream(_, ExampleAppEvent) =>
@@ -69,7 +69,7 @@ class EventConsumer extends Actor with EventSourcing {
     case ManuallyInitializeStream => sender() ! ConsumerActorReply("Event Consumer Already Started")
 
     case ManuallyTerminateStream =>
-      consumerStreamManager ! TerminateConsumerStream(kafkaTopic)
+      consumerStreamManager ! TerminateConsumerStream(kinesisTopic)
       sender() ! ConsumerActorReply("Event Consumer Stream Stopped")
 
     case other => log.error("Event Consumer got unknown message while in consuming: " + other)

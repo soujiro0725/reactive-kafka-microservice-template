@@ -17,9 +17,9 @@ class Settings(system:ActorSystem) {
         val KinesisProducerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfProducers) yield {
             val kinesisMessageType = system.settings.config.getString(s"akka.kinesis.producer.p$i.message-type")
             val kinesisMessageBrokerIP = system.settings.config.getString(s"akka.kinesis.producer.p$i.bootstrap-servers")
-            val kinesisStream = system.settings.config.getString(s"akka.kinesis.producer.p$i.publish-topic")
+            val kinesisStream = system.settings.config.getString(s"akka.kinesis.producer.p$i.publish-stream")
             val numberOfPartitions = system.settings.config.getString(s"akka.kinesis.producer.p$i.num.partitions")
-            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "publish-topic" -> kinesisStream, "num.partitions" -> numberOfPartitions)
+            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "publish-stream" -> kinesisStream, "num.partitions" -> numberOfPartitions)
         }).toMap
     }
 
@@ -30,9 +30,9 @@ class Settings(system:ActorSystem) {
         val KinesisConsumerInfo: Map[String, Map[String,String]] = (for (i <- 1 to numberOfConsumers) yield {
             val kinesisMessageType = system.settings.config.getString(s"akka.kinesis.consumer.c$i.message-type")
             val kinesisMessageBrokerIP = system.settings.config.getString(s"akka.kinesis.consumer.c$i.bootstrap-servers")
-            val kinesisStream = system.settings.config.getString(s"akka.kinesis.consumer.c$i.subscription-topic")
+            val kinesisStream = system.settings.config.getString(s"akka.kinesis.consumer.c$i.subscription-stream")
             val groupId = system.settings.config.getString(s"akka.kinesis.consumer.c$i.groupId")
-            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "subscription-topic" -> kinesisStream, "groupId" -> groupId)
+            kinesisMessageType -> Map("bootstrap-servers" -> kinesisMessageBrokerIP, "subscription-stream" -> kinesisStream, "groupId" -> groupId)
         }).toMap
     }
 }

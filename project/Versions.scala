@@ -1,6 +1,6 @@
 object Versions {
 
-  val akka = "2.5.8"
+  val akka = "2.4.20"
 
   val akka_http = "10.0.11"
   

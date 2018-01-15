@@ -26,21 +26,21 @@ object ProducerStreamManager {
 class ProducerStreamManager extends Actor with ProducerStream {
   implicit val system = context.system
 
-  //Get Kafka Producer Config Settings
-  val settings = Settings(system).KafkaProducers
+  //Get Kinesis Producer Config Settings
+  val settings = Settings(system).KinesisProducers
 
   //Edit this receive method with any new Streamed message types
   def receive: Receive = {
     case InitializeProducerStream(producerActorRef, KinesisMessage) => {
 
       //Get producer properties
-      val producerProperties = settings.KafkaProducerInfo("KinesisMessage")
+      val producerProperties = settings.KinesisProducerInfo("KinesisMessage")
       startProducerStream[KinesisMessage](producerActorRef, producerProperties)
     }
     case InitializeProducerStream(producerActorRef, ExampleAppEvent) => {
 
       //Get producer properties
-      val producerProperties = settings.KafkaProducerInfo("ExampleAppEvent")
+      val producerProperties = settings.KinesisProducerInfo("ExampleAppEvent")
       startProducerStream[ExampleAppEvent](producerActorRef, producerProperties)
     }
     case other => println(s"Producer Stream Manager got unknown message: $other")

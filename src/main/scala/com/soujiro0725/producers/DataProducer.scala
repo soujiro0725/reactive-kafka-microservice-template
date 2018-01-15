@@ -6,13 +6,13 @@ import akka.stream.scaladsl.SourceQueueWithComplete
 import com.soujiro0725.producers.DataProducer.PublishMessages
 import com.soujiro0725.shared.EventMessages.{ActivatedProducerStream, MessagesPublished}
 import com.soujiro0725.shared.EventSourcing
-import com.soujiro0725.shared.KafkaMessages.KafkaMessage
+import com.soujiro0725.shared.KinesisMessages.KinesisMessage
 
 /**
-  * This actor publishes 'KafkaMessage's to the Kafka topic TestDataChannel. The idea would be that another microservice is subscribed to
+  * This actor publishes 'KinesisMessage's to the Kinesis topic TestDataChannel. The idea would be that another microservice is subscribed to
   * the TestDataChannel topic and can then react to data messages this microservice emits.
   * This actor gets the stream connection reference from the ProducerStreamManager such that when he gets a
-  * PublishMessages command message from the HTTP interface, he will create KafkaMessages and then offer/send them to the stream.
+  * PublishMessages command message from the HTTP interface, he will create KinesisMessages and then offer/send them to the stream.
   */
 
 object DataProducer {
@@ -34,7 +34,7 @@ class DataProducer extends Actor with EventSourcing {
   var producerStream: SourceQueueWithComplete[Any] = null
 
   def receive: Receive = {
-    case ActivatedProducerStream(streamRef, kafkaTopic) =>
+    case ActivatedProducerStream(streamRef, kinesisTopic) =>
       producerStream = streamRef
       become(publishData)
     case msg: PublishMessages => if (producerStream == null) self ! msg
@@ -44,7 +44,7 @@ class DataProducer extends Actor with EventSourcing {
   def publishData: Receive = {
     case PublishMessages(numberOfMessages) =>
       for (i <- 1 to numberOfMessages) {
-        val myPublishableMessage = KafkaMessage(timetag, " send me to kafka, yo!", i)
+        val myPublishableMessage = KinesisMessage(timetag, " send me to kinesis, yo!", i)
         producerStream.offer(myPublishableMessage)
       }
 

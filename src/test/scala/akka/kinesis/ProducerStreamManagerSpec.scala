@@ -12,9 +12,12 @@ import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 
 class ProducerStreamManagerSpec extends TestKit(ActorSystem("ProducerStreamManagerSpec"))
-  with DefaultTimeout with ImplicitSender
-  with WordSpecLike with Matchers with BeforeAndAfterAll
-  with AkkaStreams {
+    with DefaultTimeout
+    with ImplicitSender
+    with WordSpecLike
+    with Matchers
+    with BeforeAndAfterAll
+    with AkkaStreams {
 
   val testProducerStreamManager = TestActorRef(new ProducerStreamManager)
   val producerStreamManagerActor = testProducerStreamManager.underlyingActor
